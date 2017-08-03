@@ -3,29 +3,49 @@ package com.vote.resultat.vote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
+import javax.persistence.Query;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 @Controller
-    @RequestMapping("/")
-    class voteControler {
-        final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+@RequestMapping("/")
+class voteControler {
 
-        @Autowired
-        ResultatService resultatService;
+    final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
-        @RequestMapping(method = RequestMethod.GET)
-        ModelAndView home() {
-            ModelAndView modelAndView = new ModelAndView("resultat");
-            modelAndView.addObject("resultat", resultatService.findAll());
-            return modelAndView;
-        }
+    @PersistenceUnit(unitName="Votes")
+    private EntityManagerFactory factory;
+
+    @Autowired
+    ResultatService resultatService;
+
+
+    @RequestMapping(name = "resultat")
+    public String getVote(ModelMap modelMap){
+        EntityManager a = factory.createEntityManager();
+
+        Query query = a.createQuery("SELECT * From Votes");
+        System.out.println(query);
+        return "result";
+    }
+
+
+
+    @RequestMapping(method = RequestMethod.GET)
+    ModelAndView home() {
+        ModelAndView modelAndView = new ModelAndView("resultat");
+        modelAndView.addObject("resultat", resultatService.findAll());
+        return modelAndView;
+    }
+
+
 
 /*
         @RequestMapping(value = "student", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE)
@@ -50,5 +70,5 @@ import java.text.SimpleDateFormat;
             return modelAndView;
         }
 */
-    }
+}
 

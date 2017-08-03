@@ -1,6 +1,14 @@
 package com.vote.resultat.vote;
 
+import jdk.nashorn.internal.objects.annotations.Constructor;
+
+import javax.persistence.*;
+
+@Entity
+@Table (name = "Votes")
 public class Resultat {
+    @Id
+    @GeneratedValue
     int vote_id;
     String voteValue;
 
@@ -9,6 +17,10 @@ public class Resultat {
         this.voteValue = voteValue;
     }
 
+    public Resultat() {
+    }
+
+    @Column(columnDefinition = "vote_id", nullable = true)
     public int getVote_id() {
         return vote_id;
     }
@@ -17,6 +29,7 @@ public class Resultat {
         this.vote_id = vote_id;
     }
 
+    @Column(columnDefinition = "voteValue", nullable = true)
     public String getVoteValue() {
         return voteValue;
     }
