@@ -1,0 +1,25 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="static/styles.css" async>
+    <title>Voting Result</title>
+    <script src="static/components.js"></script>
+    <!-- Jquery -->
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.2.1/jquery.min.js" th:src="@{/webjars/jquery/2.2.1/jquery.min.js}"></script>
+</head>
+<body>
+    <div>
+        <h1>Result voting application</h1>
+    </div>
+
+    <div class="container"><br/>
+        <div class="alert alert-success">
+            <strong>Success!</strong> It is working as we expected.
+        </div>
+        <strong th:text=" ${result}"></strong>
+    </div>
+</body>
+</html>
+

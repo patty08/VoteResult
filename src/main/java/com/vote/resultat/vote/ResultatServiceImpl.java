@@ -1,22 +1,26 @@
 package com.vote.resultat.vote;
 
-import org.springframework.stereotype.Service;
-
-import javax.annotation.ManagedBean;
+import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.List;
 
-@ManagedBean
-@Service
-public class ResultatServiceImpl implements ResultatService{
+@Transactional
+@PersistenceContext
+public class ResultatServiceImpl{
+
+    @PersistenceUnit(unitName="Votes")
+    private EntityManager entityManager;
+    private votes votes;
 
 
-    @Override
-    public String existVote() {
-        return null;
+    public String getResult() {
+        Query query = entityManager.createQuery("SELECT * From votes tes");
+        query.getResultList();
+        System.out.println(query);
+        return query.toString();
     }
 
-    @Override
-    public List<Resultat> findAll() {
+    public List<votes> findAll() {
         return null;
     }
 }

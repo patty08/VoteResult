@@ -1,11 +1,14 @@
 package com.vote.resultat.vote;
 
-import javax.transaction.Transactional;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
-@Transactional
-public interface ResultatService {
 
-    String existVote();
-    List<Resultat> findAll();
+@Service
+public interface ResultatService extends CrudRepository{
+
+    String getResult();
+    List<votes> findAll();
 }

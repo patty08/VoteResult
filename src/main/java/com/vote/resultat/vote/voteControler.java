@@ -1,74 +1,48 @@
 package com.vote.resultat.vote;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.Query;
+import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 
 @Controller
-@RequestMapping("/")
-class voteControler {
+public class voteControler {
 
     final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
-    @PersistenceUnit(unitName="Votes")
-    private EntityManagerFactory factory;
-
-    @Autowired
-    ResultatService resultatService;
-
-
-    @RequestMapping(name = "resultat")
-    public String getVote(ModelMap modelMap){
-        EntityManager a = factory.createEntityManager();
-
-        Query query = a.createQuery("SELECT * From Votes");
-        System.out.println(query);
-        return "result";
-    }
-
-
-
-    @RequestMapping(method = RequestMethod.GET)
+    private ResultatService resultatService;
+/*
+    @RequestMapping(name = "/" , method = RequestMethod.GET)
     ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView("resultat");
         modelAndView.addObject("resultat", resultatService.findAll());
         return modelAndView;
     }
-
-
-
-/*
-        @RequestMapping(value = "student", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE)
-        @ResponseStatus(value = HttpStatus.OK)
-        ModelAndView addStudent(@RequestParam Integer rollNo,
-                                @RequestParam String name,
-                                @RequestParam String dateOfBirth ) throws Exception {
-
-            ModelAndView modelAndView = new ModelAndView("student");
-            try {
-                Student student = new Student();
-                student.setRollNo(rollNo);
-                student.setName(name);
-                student.setDateOfBirth(df.parse(dateOfBirth));
-                student = studentService.addStudent(student);
-                modelAndView.addObject("message", "Student added with name: " + student.getName());
-            }
-            catch (Exception ex){
-                modelAndView.addObject("message", "Failed to add student: " + ex.getMessage());
-            }
-            modelAndView.addObject("students", studentService.getStudents());
-            return modelAndView;
-        }
 */
+
+    @RequestMapping(value = "/")
+    String home(Model model) {
+        model.addAttribute("now", LocalDateTime.now().getDayOfWeek());
+        return "index";
+    }
+
+    @RequestMapping(value = "/qsdqs")
+    String index(HttpServletRequest httpServletRequest, ModelMap modelMap) {
+        modelMap.addAttribute(httpServletRequest.getContextPath());
+        return "index";
+    }
+
+    @RequestMapping(name = "resultat", method = RequestMethod.GET)
+    public String getVote(ModelMap modelMap){
+        String avoteResult = resultatService.getResult();
+        modelMap.addAttribute("result", avoteResult);
+        return "result";
+    }
 }
 
